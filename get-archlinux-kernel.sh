@@ -29,7 +29,13 @@ echo "Installing archlinux to temp directory ..."
 ./bin/arch-chroot "$( pwd )" << 'EOF'
 pacman-key --init
 pacman-key --populate archlinux
-pacstrap /mnt base linux linux-headers linux-firmware
+pacstrap /mnt base linux linux-headers linux-firmware lvm2
+EOF
+
+echo "Generating initramfs ..."
+./bin/arch-chroot "$( pwd )/mnt" << 'EOF'
+sed -i /etc/mkinitcpio.conf -e '/HOOK/s/filesystems/lvm2 filesystems/'
+mkinitcpio -p linux
 EOF
 
 echo "Copying kernel files ..."
