@@ -58,8 +58,10 @@ echo "Running depmod ..."
 depmod -a ${KVER}
 
 [ -L /sbin/init ] && (
+case $( readlink /sbin/init ) in /*)
 echo "Creating archlinux style symbolic link for /sbin/init ..."
-ln -n -f -s "..$( readlink -f /sbin/init )" /sbin/init
+ln -n -f -s "..$( readlink /sbin/init )" /sbin/init
+esac
 )
 
 echo "Updating grub config ..."
