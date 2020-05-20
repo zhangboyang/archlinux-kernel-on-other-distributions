@@ -19,8 +19,8 @@ fi
 rm -rf "${TMPDIR}" && mkdir -p "${TMPDIR}" && cd "${TMPDIR}" && (
 
 echo "Downloading latest archlinux bootstrap image ..."
-BOOTSTRAP=$( wget -q -O- "${ARCHMIRROR}/iso/latest/sha1sums.txt" | grep -o '[^ ]*bootstrap[^ ]*' | head -n1 )
-(wget -O- "${ARCHMIRROR}/iso/latest/${BOOTSTRAP}" | tar xz) && cd root.x86_64 && (
+BOOTSTRAP=$( curl -L "${ARCHMIRROR}/iso/latest/sha1sums.txt" | grep -o '[^ ]*bootstrap[^ ]*' | head -n1 )
+(curl -L "${ARCHMIRROR}/iso/latest/${BOOTSTRAP}" | tar xz) && cd root.x86_64 && (
 
 sed -i -e 's/^CheckSpace/#CheckSpace/' etc/pacman.conf
 echo "Server = ${ARCHMIRROR}/\$repo/os/\$arch" >> etc/pacman.d/mirrorlist
